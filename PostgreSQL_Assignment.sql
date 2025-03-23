@@ -1,0 +1,3 @@
+-- DATABASE SETUP
+
+CREATE DATABASE bookstore_db;
