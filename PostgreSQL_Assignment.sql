@@ -64,3 +64,63 @@ VALUES
 (1, 3, 2, '2024-03-05');
 
 SELECT * FROM orders;
+
+
+---------- QUERIES ----------
+-- QUERY 1 STARTS --
+    -- FIND BOOKS THAT ARE OUT OF STOCK.
+    SELECT title FROM books
+        WHERE stock = 0;
+-- QUERY 1 ENDS --
+
+-- QUERY 2 STARTS --
+    -- RETRIEVE THE MOST EXPENSIVE BOOK IN THE STORE.
+    SELECT * FROM books
+        ORDER BY price DESC
+        LIMIT 1;
+-- QUERY 2 ENDS --
+
+-- QUERY 3 STARTS --
+    -- FIND THE TOTAL NUMBER OF ORDERS PLACED BY EACH CUSTOMER.
+    SELECT c.name, COUNT(o.id) AS total_orders FROM customers c
+        JOIN orders o ON c.id = o.customer_id
+        GROUP BY c.name;
+-- QUERY 3 ENDS --
+
+-- QUERY 4 STARTS --
+    -- CALCULATE THE TOTAL REVENUE GENERATED FROM BOOK SALES.
+        SELECT SUM(b.price * o.quantity) AS total_revenue FROM orders o
+            JOIN books b ON o.book_id = b.id;
+-- QUERY 4 ENDS --
+
+-- QUERY 5 STARTS --
+    -- LIST ALL CUSTOMERS WHO HAVE PLACED MORE THAN ONE ORDER.
+    SELECT c.name, COUNT(o.id) AS orders_count FROM customers c
+        JOIN orders o ON c.id = o.customer_id GROUP BY c.id, c.name
+        HAVING COUNT(o.id) > 1;
+-- QUERY 5 ENDS ---
+
+-- QUERY 6 STARTS --
+    -- FIND THE AVERAGE PRICE OF BOOKS IN THE STORE.
+    SELECT ROUND(AVG(price), 2) AS avg_book_price FROM books;
+-- QUERY 6 ENDS ---
+
+-- QUERY 7 STARTS --
+    -- INCREASE THE PRICE OF ALL BOOKS PUBLISHED BEFORE 2000 BY 10%.
+    UPDATE books
+        SET price = price * 1.10 
+        WHERE published_year < 2000;
+-- QUERY 7 ENDS ---
+
+-- QUERY 8 STARTS --
+    -- DELETE CUSTOMERS WHO HAVEN'T PLACED ANY ORDERS.
+    DELETE FROM customers
+        WHERE id NOT IN 
+            (SELECT DISTINCT customer_id FROM orders);
+-- QUERY 8 ENDS ---
+
+
+-- DROPPED AND CREATED AGAIN AFTER DELETE COMMAND
+    -- DROP TABLE books;
+    -- DROP TABLE customers;
+    -- DROP TABLE orders;
